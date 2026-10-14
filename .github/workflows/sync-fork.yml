@@ -1,0 +1,24 @@
+name: Automatically Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync fork with upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          UPSTREAM: amith-vp/Kerala-Dam-Water-Levels
+        run: |
+          gh repo sync "$REPOSITORY" \
+            --source "$UPSTREAM" \
+            --branch main
